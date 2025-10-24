@@ -28,7 +28,6 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-snap-type: y proximity;
             overflow-x: hidden;
         }
 
@@ -63,6 +62,7 @@
             z-index: 1000;
             padding: 15px 0;
             border-bottom: 1px solid var(--medium-gray);
+            transition: all 0.3s ease;
         }
 
         .header-container {
@@ -242,16 +242,18 @@
 
         .service-card {
             background-color: var(--medium-gray);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 30px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(184, 134, 11, 0.1);
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(184, 134, 11, 0.3);
         }
 
         .service-card::before {
@@ -260,8 +262,14 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
+            height: 4px;
             background: var(--gold-gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
         }
 
         .service-title {
@@ -280,6 +288,7 @@
         .service-description {
             color: var(--text-gray);
             margin-bottom: 20px;
+            line-height: 1.6;
         }
 
         .service-features {
@@ -290,30 +299,34 @@
         .service-features li {
             margin-bottom: 8px;
             position: relative;
-            padding-left: 20px;
+            padding-left: 25px;
+            color: var(--text-gray);
         }
 
         .service-features li::before {
-            content: '✓';
+            content: '✦';
             position: absolute;
             left: 0;
             color: var(--gold);
+            font-weight: bold;
         }
 
         .order-btn {
             background: var(--gold-gradient);
             color: var(--text-light);
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 25px;
+            border-radius: 6px;
             font-weight: 500;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
             width: 100%;
+            font-size: 1rem;
         }
 
         .order-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 134, 11, 0.4);
         }
 
         /* Process */
@@ -358,15 +371,22 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--text-light);
+            transition: transform 0.3s ease;
+        }
+
+        .process-step:hover .step-number {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .step-title {
             font-size: 1.3rem;
             margin-bottom: 15px;
+            color: var(--text-light);
         }
 
         .step-description {
             color: var(--text-gray);
+            line-height: 1.6;
         }
 
         /* Cocktails */
@@ -379,44 +399,42 @@
             justify-content: center;
             margin-bottom: 40px;
             flex-wrap: wrap;
+            gap: 10px;
         }
 
         .cocktail-tab {
-            background: none;
-            border: none;
+            background: var(--medium-gray);
+            border: 2px solid transparent;
             color: var(--text-light);
-            padding: 10px 20px;
-            margin: 0 10px;
+            padding: 12px 25px;
+            margin: 0 5px;
             cursor: pointer;
             font-size: 1.1rem;
             position: relative;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            border-radius: 6px;
         }
 
         .cocktail-tab.active {
-            color: var(--gold);
-        }
-
-        .cocktail-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
             background: var(--gold-gradient);
+            color: var(--text-light);
+            border-color: var(--gold);
         }
 
         .cocktail-tab:hover {
-            color: var(--gold);
+            border-color: var(--gold);
+            transform: translateY(-2px);
         }
 
         .cocktail-content {
             display: none;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
         .cocktail-content.active {
             display: block;
+            animation: tabContentAppear 0.6s ease forwards;
         }
 
         .cocktail-grid {
@@ -427,13 +445,41 @@
 
         .cocktail-card {
             background-color: var(--medium-gray);
-            border-radius: 8px;
-            padding: 20px;
-            transition: transform 0.3s;
+            border-radius: 10px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(184, 134, 11, 0.1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .cocktail-card.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
 
         .cocktail-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-color: rgba(184, 134, 11, 0.3);
+        }
+
+        .cocktail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cocktail-card:hover::before {
+            left: 100%;
         }
 
         .cocktail-name {
@@ -445,6 +491,21 @@
         .cocktail-ingredients {
             color: var(--text-gray);
             font-style: italic;
+            line-height: 1.5;
+        }
+
+        .cocktail-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--dark-gray), var(--medium-gray));
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            overflow: hidden;
+            position: relative;
         }
 
         /* Kitchen */
@@ -460,31 +521,48 @@
 
         .kitchen-card {
             background-color: var(--medium-gray);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 20px;
             text-align: center;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(184, 134, 11, 0.1);
         }
 
         .kitchen-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(184, 134, 11, 0.3);
         }
 
         .kitchen-image {
             width: 100%;
             height: 180px;
-            background-color: var(--dark-gray);
-            border-radius: 6px;
+            background: linear-gradient(45deg, var(--dark-gray), var(--medium-gray));
+            border-radius: 8px;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-gray);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .kitchen-card:hover .kitchen-image {
+            transform: scale(1.05);
         }
 
         .kitchen-name {
             font-size: 1.1rem;
             color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+
+        .kitchen-card:hover .kitchen-name {
+            color: var(--gold);
         }
 
         /* Portfolio */
@@ -497,35 +575,28 @@
             justify-content: center;
             margin-bottom: 40px;
             flex-wrap: wrap;
+            gap: 10px;
         }
 
         .portfolio-filter {
-            background: none;
-            border: none;
+            background: var(--medium-gray);
+            border: 2px solid transparent;
             color: var(--text-light);
-            padding: 8px 15px;
-            margin: 0 10px;
+            padding: 10px 20px;
             cursor: pointer;
             position: relative;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            border-radius: 6px;
         }
 
         .portfolio-filter.active {
-            color: var(--gold);
-        }
-
-        .portfolio-filter.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
             background: var(--gold-gradient);
+            color: var(--text-light);
         }
 
         .portfolio-filter:hover {
-            color: var(--gold);
+            border-color: var(--gold);
+            transform: translateY(-2px);
         }
 
         .portfolio-grid {
@@ -536,21 +607,44 @@
 
         .portfolio-item {
             position: relative;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             height: 250px;
             background-color: var(--medium-gray);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .portfolio-item.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .portfolio-item.fade-out {
+            opacity: 0;
+            transform: scale(0.8) rotate(-5deg);
+        }
+
+        .portfolio-item.fade-in {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
         .portfolio-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
+            transition: transform 0.5s ease;
         }
 
         .portfolio-item:hover .portfolio-image {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .portfolio-overlay {
@@ -558,10 +652,10 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(10, 10, 10, 0.9));
+            padding: 25px;
+            background: linear-gradient(transparent, rgba(10, 10, 10, 0.95));
             transform: translateY(100%);
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
 
         .portfolio-item:hover .portfolio-overlay {
@@ -571,6 +665,12 @@
         .portfolio-title {
             font-size: 1.2rem;
             color: var(--text-light);
+        }
+
+        .portfolio-description {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-top: 5px;
         }
 
         /* Contact */
@@ -586,6 +686,7 @@
 
         .contact-info h3 {
             margin-bottom: 20px;
+            color: var(--text-light);
         }
 
         .contact-details {
@@ -595,18 +696,24 @@
         .contact-item {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateX(5px);
         }
 
         .contact-icon {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: var(--gold-gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 15px;
+            font-size: 1.2rem;
         }
 
         .social-links {
@@ -615,49 +722,55 @@
         }
 
         .social-link {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: var(--medium-gray);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
         }
 
         .social-link:hover {
             background: var(--gold-gradient);
+            transform: translateY(-3px) scale(1.1);
         }
 
         .contact-form {
             background-color: var(--medium-gray);
-            padding: 30px;
-            border-radius: 8px;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(184, 134, 11, 0.1);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--text-light);
+            font-weight: 500;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 15px;
+            padding: 15px;
             background-color: var(--dark-gray);
-            border: 1px solid var(--dark-gray);
-            border-radius: 4px;
+            border: 2px solid var(--dark-gray);
+            border-radius: 6px;
             color: var(--text-light);
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
         }
 
         textarea.form-control {
@@ -669,28 +782,31 @@
             background: var(--gold-gradient);
             color: var(--text-light);
             border: none;
-            padding: 12px 30px;
-            border-radius: 4px;
+            padding: 15px 35px;
+            border-radius: 6px;
             font-weight: 500;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            width: 100%;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(184, 134, 11, 0.4);
         }
 
         /* Footer */
         footer {
             background-color: var(--dark-gray);
-            padding: 40px 0;
+            padding: 50px 0 30px;
             text-align: center;
             border-top: 1px solid var(--medium-gray);
         }
 
         .footer-logo {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
@@ -703,36 +819,136 @@
 
         .footer-text {
             color: var(--text-gray);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
         }
 
         .footer-links {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            gap: 20px;
         }
 
         .footer-links a {
             color: var(--text-gray);
-            margin: 0 15px;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
         }
 
         .footer-links a:hover {
             color: var(--gold);
+            transform: translateY(-2px);
         }
 
         .copyright {
             color: var(--text-gray);
             font-size: 0.9rem;
+            margin-top: 20px;
         }
 
-        /* Animations */
+        /* GSAP Animation Classes */
         .gsap-reveal {
             opacity: 0;
-            transform: translateY(50px);
+            visibility: hidden;
+        }
+
+        .slide-from-left {
+            transform: translateX(-80px);
+        }
+
+        .slide-from-right {
+            transform: translateX(80px);
+        }
+
+        .slide-from-bottom {
+            transform: translateY(80px);
+        }
+
+        .slide-from-top {
+            transform: translateY(-80px);
+        }
+
+        .scale-in {
+            transform: scale(0.9);
+        }
+
+        .rotate-in {
+            transform: rotate(-5deg) scale(0.95);
+        }
+
+        .fade-in {
+            transform: scale(0.95);
+        }
+
+        /* Анимации для переключения вкладок */
+        @keyframes tabContentAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Анимация для фильтров портфолио */
+        .portfolio-filter.active {
+            animation: filterPulse 0.3s ease;
+        }
+
+        @keyframes filterPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Индикатор загрузки для вкладок */
+        .tab-loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: var(--gold-gradient);
+            animation: loadingBar 0.6s ease;
+        }
+
+        @keyframes loadingBar {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Image Styles */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--dark-gray), var(--medium-gray));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            border-radius: 8px;
         }
 
         /* Mobile Menu */
@@ -743,6 +959,7 @@
             color: var(--text-light);
             font-size: 1.5rem;
             cursor: pointer;
+            padding: 5px;
         }
 
         /* Responsive */
@@ -763,6 +980,10 @@
             .process-step {
                 margin-bottom: 40px;
                 max-width: 300px;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
             }
         }
 
@@ -787,10 +1008,11 @@
             
             nav ul {
                 flex-direction: column;
+                gap: 10px;
             }
             
             nav ul li {
-                margin: 10px 0;
+                margin: 0;
             }
             
             .contact-top {
@@ -805,6 +1027,10 @@
             
             .section-title h2 {
                 font-size: 2rem;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -828,6 +1054,14 @@
             
             .cocktail-tab, .portfolio-filter {
                 margin: 5px 0;
+                width: 200px;
+            }
+            
+            .services-grid,
+            .cocktail-grid,
+            .kitchen-grid,
+            .portfolio-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -861,9 +1095,9 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
-            <h1 class="gsap-reveal">Event-агентство | праздничные услуги Пить и Танцевать</h1>
-            <p class="gsap-reveal">Создаем незабываемые события под ключ! Свадьбы, корпоративы, вечеринки и многое другое.</p>
-            <a href="#contact" class="hero-btn gsap-reveal">Заказать мероприятие</a>
+            <h1 class="gsap-reveal slide-from-bottom">Event-агентство | праздничные услуги Пить и Танцевать</h1>
+            <p class="gsap-reveal slide-from-bottom">Создаем незабываемые события под ключ! Свадьбы, корпоративы, вечеринки и многое другое.</p>
+            <a href="#contact" class="hero-btn gsap-reveal slide-from-bottom">Заказать мероприятие</a>
         </div>
     </section>
 
@@ -871,32 +1105,35 @@
     <section id="services" class="services">
         <div class="container">
             <div class="section-title">
-                <h2>Наши услуги</h2>
+                <h2 class="gsap-reveal slide-from-bottom">Наши услуги</h2>
             </div>
             
             <div class="services-grid">
-                <div class="service-card gsap-reveal">
+                <!-- Левая карточка -->
+                <div class="service-card gsap-reveal slide-from-left">
                     <h3 class="service-title">Тяжелый дым на свадебный танец</h3>
                     <div class="service-price">от 8000 руб.</div>
-                    <p class="service-description">Создаем волшебную атмосферу для вашего первого танца как супруги</p>
+                    <p class="service-description">Создаем волшебную атмосферу для вашего первого танца как супруги с профессиональным дымовым оборудованием</p>
                     <button class="order-btn" onclick="openWhatsApp('Тяжелый дым на свадебный танец')">Заказать</button>
                 </div>
                 
-                <div class="service-card gsap-reveal">
+                <!-- Центральная карточка -->
+                <div class="service-card gsap-reveal slide-from-bottom">
                     <h3 class="service-title">Пирамида из бокалов с шампанским</h3>
                     <div class="service-price">от 6000 руб.</div>
-                    <p class="service-description">Эффектная подача шампанского для вашего торжества</p>
+                    <p class="service-description">Эффектная подача шампанского для вашего торжества. Идеально для фотосессий и создания праздничной атмосферы</p>
                     <ul class="service-features">
-                        <li>35 бокалов</li>
-                        <li>55 бокалов</li>
+                        <li>35 бокалов - для небольших мероприятий</li>
+                        <li>55 бокалов - для масштабных праздников</li>
                     </ul>
                     <button class="order-btn" onclick="openWhatsApp('Пирамида из бокалов с шампанским')">Заказать</button>
                 </div>
                 
-                <div class="service-card gsap-reveal">
+                <!-- Правая карточка -->
+                <div class="service-card gsap-reveal slide-from-right">
                     <h3 class="service-title">Коктейльный бар под ключ</h3>
                     <div class="service-price">от 25000 руб.</div>
-                    <p class="service-description">Полноценный бар с профессиональным барменом и разнообразными коктейлями</p>
+                    <p class="service-description">Полноценный бар с профессиональным барменом и разнообразными коктейлями для вашего идеального мероприятия</p>
                     <ul class="service-features">
                         <li>На выбор от 5 коктейлей</li>
                         <li>Выезд от 1 бармена</li>
@@ -913,32 +1150,33 @@
     <section id="process" class="process">
         <div class="container">
             <div class="section-title">
-                <h2>Наш процесс</h2>
+                <h2 class="gsap-reveal slide-from-bottom">Наш процесс</h2>
             </div>
             
             <div class="process-steps">
-                <div class="process-step gsap-reveal">
+                <!-- Чередование анимаций для шагов -->
+                <div class="process-step gsap-reveal slide-from-left">
                     <div class="step-number">1</div>
                     <h3 class="step-title">Консультация</h3>
-                    <p class="step-description">Обсуждаем ваши пожелания, бюджет и особенности мероприятия</p>
+                    <p class="step-description">Обсуждаем ваши пожелания, бюджет и особенности мероприятия. Подбираем оптимальные решения для вашего события.</p>
                 </div>
                 
-                <div class="process-step gsap-reveal">
+                <div class="process-step gsap-reveal slide-from-right">
                     <div class="step-number">2</div>
                     <h3 class="step-title">Концепция</h3>
-                    <p class="step-description">Разрабатываем уникальную концепцию и тематику вашего события</p>
+                    <p class="step-description">Разрабатываем уникальную концепцию и тематику вашего события. Создаем дизайн-проект и подбираем оформление.</p>
                 </div>
                 
-                <div class="process-step gsap-reveal">
+                <div class="process-step gsap-reveal slide-from-left">
                     <div class="step-number">3</div>
                     <h3 class="step-title">Планирование</h3>
-                    <p class="step-description">Составляем детальный план и подбираем все необходимые услуги</p>
+                    <p class="step-description">Составляем детальный план и подбираем все необходимые услуги. Координируем работу всех подрядчиков.</p>
                 </div>
                 
-                <div class="process-step gsap-reveal">
+                <div class="process-step gsap-reveal slide-from-right">
                     <div class="step-number">4</div>
                     <h3 class="step-title">Реализация</h3>
-                    <p class="step-description">Организуем и проводим мероприятие, контролируя все процессы</p>
+                    <p class="step-description">Организуем и проводим мероприятие, контролируя все процессы. Обеспечиваем безупречное исполнение вашего праздника.</p>
                 </div>
             </div>
         </div>
@@ -948,7 +1186,7 @@
     <section id="cocktails" class="cocktails">
         <div class="container">
             <div class="section-title">
-                <h2>Коктейльная карта</h2>
+                <h2 class="gsap-reveal slide-from-bottom">Коктейльная карта</h2>
             </div>
             
             <div class="cocktail-tabs">
@@ -959,132 +1197,108 @@
             
             <div class="cocktail-content active" id="alcoholic-content">
                 <div class="cocktail-grid">
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card visible">
                         <h3 class="cocktail-name">Лонг Айленд Айс Ти</h3>
                         <p class="cocktail-ingredients">Водка, джин, ром, текила, трипл сек, лимонный сок, кола</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card visible">
                         <h3 class="cocktail-name">Дайкири</h3>
                         <p class="cocktail-ingredients">Белый ром, сахарный сироп, лаймовый сок</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card visible">
                         <h3 class="cocktail-name">Мятный экстази</h3>
                         <p class="cocktail-ingredients">Водка, ликер мяты, лимонный сок, содовая</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card visible">
                         <h3 class="cocktail-name">Черный русский</h3>
                         <p class="cocktail-ingredients">Водка, кофейный ликер</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Том Колинз</h3>
-                        <p class="cocktail-ingredients">Джин, лимонный сок, сахарный сироп, содовая</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Вайт Леди</h3>
-                        <p class="cocktail-ingredients">Джин, куантро, лимонный сок</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Кайпиринья</h3>
-                        <p class="cocktail-ingredients">Кашаса, лайм, тростниковый сахар</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Поцелуй VS</h3>
-                        <p class="cocktail-ingredients">Водка, ликер шоколада, ликер малины</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div class="cocktail-content" id="non-alcoholic-content">
                 <div class="cocktail-grid">
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Манго-маракуя</h3>
                         <p class="cocktail-ingredients">Сок манго, пюре маракуйи, лайм, содовая</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Грейпфрут-соленая карамель</h3>
                         <p class="cocktail-ingredients">Сок грейпфрута, сироп соленой карамели, содовая</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Малиновый рассвет</h3>
                         <p class="cocktail-ingredients">Пюре малины, лимонный сок, гренадин, содовая</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Мохито</h3>
                         <p class="cocktail-ingredients">Лайм, мята, сахарный сироп, содовая</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Арбуз-базилик</h3>
-                        <p class="cocktail-ingredients">Сок арбуза, листья базилика, лайм, содовая</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Лавандовый-бергамот</h3>
-                        <p class="cocktail-ingredients">Сироп лаванды, чай бергамот, лимон, содовая</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div class="cocktail-content" id="classic-content">
                 <div class="cocktail-grid">
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Old Fashioned</h3>
                         <p class="cocktail-ingredients">Bourbon, sugar, bitters, orange twist</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Negroni</h3>
                         <p class="cocktail-ingredients">Gin, Campari, sweet vermouth</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Mojito</h3>
                         <p class="cocktail-ingredients">White rum, lime, mint, sugar, soda</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                     
-                    <div class="cocktail-card gsap-reveal">
+                    <div class="cocktail-card">
                         <h3 class="cocktail-name">Whiskey Sour</h3>
                         <p class="cocktail-ingredients">Whiskey, lemon juice, sugar, egg white</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Dry Martini</h3>
-                        <p class="cocktail-ingredients">Gin, dry vermouth, olive or lemon twist</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Margarita</h3>
-                        <p class="cocktail-ingredients">Tequila, triple sec, lime juice</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Manhattan</h3>
-                        <p class="cocktail-ingredients">Whiskey, sweet vermouth, bitters</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Moscow Mule</h3>
-                        <p class="cocktail-ingredients">Vodka, ginger beer, lime</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Espresso Martini</h3>
-                        <p class="cocktail-ingredients">Vodka, coffee liqueur, espresso</p>
-                    </div>
-                    
-                    <div class="cocktail-card gsap-reveal">
-                        <h3 class="cocktail-name">Pina Colada</h3>
-                        <p class="cocktail-ingredients">Rum, coconut cream, pineapple juice</p>
+                        <div class="cocktail-image">
+                            <div class="image-placeholder">Фото коктейля</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1095,98 +1309,51 @@
     <section id="kitchen" class="kitchen">
         <div class="container">
             <div class="section-title">
-                <h2>Наша кухня</h2>
+                <h2 class="gsap-reveal slide-from-bottom">Наша кухня</h2>
             </div>
             
             <div class="kitchen-grid">
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
+                <!-- Спиральная анимация для кухни -->
+                <div class="kitchen-card gsap-reveal slide-from-left">
+                    <div class="kitchen-image">
+                        <div class="image-placeholder">Тарталетка кремчиз-икра</div>
+                    </div>
                     <h3 class="kitchen-name">Тарталетка кремчиз-икра</h3>
                 </div>
                 
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
+                <div class="kitchen-card gsap-reveal slide-from-bottom">
+                    <div class="kitchen-image">
+                        <div class="image-placeholder">Тарталетка кремчиз-лосось</div>
+                    </div>
                     <h3 class="kitchen-name">Тарталетка кремчиз-лосось</h3>
                 </div>
                 
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
+                <div class="kitchen-card gsap-reveal slide-from-right">
+                    <div class="kitchen-image">
+                        <div class="image-placeholder">Салат греческий</div>
+                    </div>
                     <h3 class="kitchen-name">Салат греческий</h3>
                 </div>
                 
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
+                <div class="kitchen-card gsap-reveal slide-from-top">
+                    <div class="kitchen-image">
+                        <div class="image-placeholder">Тарталетка Салями</div>
+                    </div>
                     <h3 class="kitchen-name">Тарталетка Салями</h3>
                 </div>
                 
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
+                <div class="kitchen-card gsap-reveal slide-from-left">
+                    <div class="kitchen-image">
+                        <div class="image-placeholder">Тарталетка Гусиная печень</div>
+                    </div>
                     <h3 class="kitchen-name">Тарталетка Гусиная печень с перепелинным яйцом</h3>
                 </div>
                 
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
+                <div class="kitchen-card gsap-reveal slide-from-bottom">
+                    <div class="kitchen-image">
+                        <div class="image-placeholder">Канапе Пеперони</div>
+                    </div>
                     <h3 class="kitchen-name">Канапе Пеперони</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Канапе с лососем</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Брускета Салями</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Брускета Сельдь на сыре с корнишонами</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Брускета с лососем</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Ролл Цезарь с куриным филе</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Тарталетка с паштетом из тунца с черри</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Такосы</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Салат Цезарь</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Канапе Камамбер с виноградом</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Канапе Чеддер с виноградом</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Брускетта Капрезе</h3>
-                </div>
-                
-                <div class="kitchen-card gsap-reveal">
-                    <div class="kitchen-image">Фото</div>
-                    <h3 class="kitchen-name">Тар-тар с тунцом и авокадо</h3>
                 </div>
             </div>
         </div>
@@ -1196,7 +1363,7 @@
     <section id="portfolio" class="portfolio">
         <div class="container">
             <div class="section-title">
-                <h2>Портфолио</h2>
+                <h2 class="gsap-reveal slide-from-bottom">Портфолио</h2>
             </div>
             
             <div class="portfolio-filters">
@@ -1208,45 +1375,63 @@
             </div>
             
             <div class="portfolio-grid">
-                <div class="portfolio-item gsap-reveal" data-category="weddings">
-                    <div class="portfolio-image">Фото свадьбы</div>
+                <div class="portfolio-item active" data-category="weddings">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">Свадьба Анны и Михаила</div>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Свадьба Анны и Михаила</h3>
+                        <p class="portfolio-description">Роскошная свадьба в классическом стиле</p>
                     </div>
                 </div>
                 
-                <div class="portfolio-item gsap-reveal" data-category="corporate">
-                    <div class="portfolio-image">Фото корпоратива</div>
+                <div class="portfolio-item active" data-category="corporate">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">Корпоратив IT-компании</div>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Корпоратив IT-компании</h3>
+                        <p class="portfolio-description">Modern стиль с технологичными элементами</p>
                     </div>
                 </div>
                 
-                <div class="portfolio-item gsap-reveal" data-category="parties">
-                    <div class="portfolio-image">Фото вечеринки</div>
+                <div class="portfolio-item active" data-category="parties">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">День рождения в стиле 80-х</div>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">День рождения в стиле 80-х</h3>
+                        <p class="portfolio-description">Яркая вечеринка в ретро-стиле</p>
                     </div>
                 </div>
                 
-                <div class="portfolio-item gsap-reveal" data-category="thematic">
-                    <div class="portfolio-image">Фото тематического</div>
+                <div class="portfolio-item active" data-category="thematic">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">Вечеринка в стиле Великий Гэтсби</div>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Вечеринка в стиле Великий Гэтсби</h3>
+                        <p class="portfolio-description">Элегантность 20-х годов</p>
                     </div>
                 </div>
                 
-                <div class="portfolio-item gsap-reveal" data-category="weddings">
-                    <div class="portfolio-image">Фото свадьбы</div>
+                <div class="portfolio-item active" data-category="weddings">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">Свадьба на природе</div>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Свадьба на природе</h3>
+                        <p class="portfolio-description">Эко-свадьба в загородном отеле</p>
                     </div>
                 </div>
                 
-                <div class="portfolio-item gsap-reveal" data-category="corporate">
-                    <div class="portfolio-image">Фото корпоратива</div>
+                <div class="portfolio-item active" data-category="corporate">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">Новогодний корпоратив</div>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Новогодний корпоратив</h3>
+                        <p class="portfolio-description">Праздничная атмосфера</p>
                     </div>
                 </div>
             </div>
@@ -1257,52 +1442,55 @@
     <section id="contact" class="contact">
         <div class="container">
             <div class="section-title">
-                <h2>Контакты</h2>
+                <h2 class="gsap-reveal slide-from-bottom">Контакты</h2>
             </div>
             
             <div class="contact-container">
                 <div class="contact-info">
-                    <h3>Свяжитесь с нами</h3>
+                    <h3 class="gsap-reveal slide-from-left">Свяжитесь с нами</h3>
                     
                     <div class="contact-details">
-                        <div class="contact-item">
+                        <div class="contact-item gsap-reveal slide-from-left">
                             <div class="contact-icon">📞</div>
                             <div>
                                 <a href="tel:+79773001608" class="phone-link">+7 977-300-16-08</a>
+                                <p style="color: var(--text-gray); margin-top: 5px;">Ежедневно с 10:00 до 22:00</p>
                             </div>
                         </div>
                         
-                        <div class="contact-item">
+                        <div class="contact-item gsap-reveal slide-from-left">
                             <div class="contact-icon">✉️</div>
                             <div>
                                 <a href="mailto:rostislav204@yandex.ru">rostislav204@yandex.ru</a>
+                                <p style="color: var(--text-gray); margin-top: 5px;">Ответим в течение 2 часов</p>
                             </div>
                         </div>
                     </div>
                     
-                    <h3>Мы в социальных сетях</h3>
+                    <h3 class="gsap-reveal slide-from-left" style="margin-top: 30px;">Мы в социальных сетях</h3>
                     
                     <div class="social-links">
-                        <a href="#" class="social-link">Tg</a>
-                        <a href="#" class="social-link">Vk</a>
+                        <a href="#" class="social-link gsap-reveal scale-in">Tg</a>
+                        <a href="#" class="social-link gsap-reveal scale-in">Vk</a>
                     </div>
                 </div>
                 
-                <div class="contact-form">
+                <div class="contact-form gsap-reveal slide-from-right">
                     <form id="contactForm">
                         <div class="form-group">
-                            <label for="name">Ваше имя</label>
-                            <input type="text" id="name" class="form-control" required>
+                            <label for="name">Ваше имя *</label>
+                            <input type="text" id="name" class="form-control" required placeholder="Как к вам обращаться?">
                         </div>
                         
                         <div class="form-group">
-                            <label for="phone">Телефон</label>
-                            <input type="tel" id="phone" class="form-control" required>
+                            <label for="phone">Телефон *</label>
+                            <input type="tel" id="phone" class="form-control" required placeholder="+7 (___)-___-__-__">
                         </div>
                         
                         <div class="form-group">
                             <label for="event">Тип мероприятия</label>
                             <select id="event" class="form-control">
+                                <option value="">Выберите тип мероприятия</option>
                                 <option value="wedding">Свадьба</option>
                                 <option value="corporate">Корпоратив</option>
                                 <option value="birthday">День рождения</option>
@@ -1311,8 +1499,8 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="message">Сообщение</label>
-                            <textarea id="message" class="form-control"></textarea>
+                            <label for="message">Дополнительная информация</label>
+                            <textarea id="message" class="form-control" placeholder="Расскажите о вашем мероприятии..."></textarea>
                         </div>
                         
                         <button type="submit" class="submit-btn">Отправить заявку</button>
@@ -1325,144 +1513,275 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-logo">Пить и <span>Танцевать</span></div>
-            <p class="footer-text">Создаем незабываемые события под ключ</p>
+            <div class="footer-logo gsap-reveal scale-in">Пить и <span>Танцевать</span></div>
+            <p class="footer-text gsap-reveal slide-from-bottom">Создаем незабываемые события под ключ</p>
             
             <div class="footer-links">
-                <a href="#services">Услуги</a>
-                <a href="#process">Процесс</a>
-                <a href="#cocktails">Коктейльная карта</a>
-                <a href="#kitchen">Кухня</a>
-                <a href="#portfolio">Портфолио</a>
-                <a href="#contact">Контакты</a>
+                <a href="#services" class="gsap-reveal slide-from-left">Услуги</a>
+                <a href="#process" class="gsap-reveal slide-from-bottom">Процесс</a>
+                <a href="#cocktails" class="gsap-reveal slide-from-bottom">Коктейльная карта</a>
+                <a href="#kitchen" class="gsap-reveal slide-from-bottom">Кухня</a>
+                <a href="#portfolio" class="gsap-reveal slide-from-bottom">Портфолио</a>
+                <a href="#contact" class="gsap-reveal slide-from-right">Контакты</a>
             </div>
             
-            <p class="copyright">© 2023 Пить и Танцевать. Все права защищены.</p>
+            <p class="copyright gsap-reveal slide-from-bottom">© 2023 Пить и Танцевать. Все права защищены.</p>
         </div>
     </footer>
 
     <script>
-        // Инициализация GSAP и ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Анимация для элементов с классом gsap-reveal
-        gsap.utils.toArray('.gsap-reveal').forEach(element => {
-            gsap.fromTo(element, {
-                opacity: 0,
-                y: 50
-            }, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: element,
-                    start: "top 80%",
-                    end: "bottom 20%",
-                    toggleActions: "play none none reverse"
-                }
-            });
-        });
-        
-        // Анимация для заголовка героя
-        gsap.fromTo('.hero h1', {
-            opacity: 0,
-            y: 100
-        }, {
-            opacity: 1,
-            y: 0,
-            duration: 1.5,
-            ease: "power3.out"
-        });
-        
-        gsap.fromTo('.hero p', {
-            opacity: 0,
-            y: 50
-        }, {
-            opacity: 1,
-            y: 0,
-            duration: 1.5,
-            delay: 0.5,
-            ease: "power3.out"
-        });
-        
-        gsap.fromTo('.hero-btn', {
-            opacity: 0,
-            scale: 0.8
-        }, {
-            opacity: 1,
-            scale: 1,
-            duration: 1,
-            delay: 1,
-            ease: "back.out(1.7)"
-        });
-        
-        // Анимация для навигации при скролле
-        gsap.to('header', {
-            backgroundColor: 'rgba(10, 10, 10, 0.95)',
-            padding: '10px 0',
-            duration: 0.3,
-            scrollTrigger: {
-                trigger: 'body',
-                start: '50px top',
-                end: 'bottom top',
-                toggleActions: 'play reverse play reverse'
-            }
-        });
-        
-        // Функции для вкладок
+        // Анимации для переключения вкладок коктейлей
         document.querySelectorAll('.cocktail-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
+            tab.addEventListener('click', function() {
+                // Анимация кнопки
+                this.classList.add('tab-loading');
+                setTimeout(() => {
+                    this.classList.remove('tab-loading');
+                }, 600);
+
                 // Убираем активный класс у всех вкладок
                 document.querySelectorAll('.cocktail-tab').forEach(t => {
                     t.classList.remove('active');
                 });
                 
                 // Добавляем активный класс текущей вкладке
-                tab.classList.add('active');
+                this.classList.add('active');
                 
-                // Скрываем все контенты
+                const tabId = this.getAttribute('data-tab');
+                const targetContent = document.getElementById(`${tabId}-content`);
+                
+                // Анимация переключения контента
                 document.querySelectorAll('.cocktail-content').forEach(content => {
-                    content.classList.remove('active');
+                    if (content.classList.contains('active')) {
+                        // Анимация исчезновения текущего контента
+                        gsap.to(content, {
+                            opacity: 0,
+                            y: -30,
+                            duration: 0.3,
+                            ease: "power2.in",
+                            onComplete: () => {
+                                content.classList.remove('active');
+                                // Показываем новый контент
+                                showNewTabContent(targetContent);
+                            }
+                        });
+                    }
                 });
-                
-                // Показываем соответствующий контент
-                const tabId = tab.getAttribute('data-tab');
-                document.getElementById(`${tabId}-content`).classList.add('active');
             });
         });
-        
-        // Функции для фильтра портфолио
+
+        function showNewTabContent(contentElement) {
+            contentElement.classList.add('active');
+            
+            // Анимация появления нового контента
+            gsap.fromTo(contentElement, {
+                opacity: 0,
+                y: 30
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out"
+            });
+
+            // Анимация появления карточек с задержкой
+            const cards = contentElement.querySelectorAll('.cocktail-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px) scale(0.9)';
+                
+                setTimeout(() => {
+                    card.classList.add('visible');
+                    gsap.to(card, {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.8,
+                        delay: index * 0.1,
+                        ease: "back.out(1.7)"
+                    });
+                }, 100);
+            });
+        }
+
+        // Анимации для фильтров портфолио
         document.querySelectorAll('.portfolio-filter').forEach(filter => {
-            filter.addEventListener('click', () => {
+            filter.addEventListener('click', function() {
+                // Анимация кнопки фильтра
+                this.classList.add('active');
+                setTimeout(() => {
+                    this.classList.remove('active');
+                }, 300);
+
                 // Убираем активный класс у всех фильтров
                 document.querySelectorAll('.portfolio-filter').forEach(f => {
                     f.classList.remove('active');
                 });
                 
                 // Добавляем активный класс текущему фильтру
-                filter.classList.add('active');
+                this.classList.add('active');
                 
-                const filterValue = filter.getAttribute('data-filter');
+                const filterValue = this.getAttribute('data-filter');
+                const portfolioItems = document.querySelectorAll('.portfolio-item');
                 
-                // Показываем/скрываем элементы портфолио
-                document.querySelectorAll('.portfolio-item').forEach(item => {
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                // Анимация переключения элементов портфолио
+                portfolioItems.forEach((item, index) => {
+                    const shouldShow = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
+                    
+                    if (shouldShow && !item.classList.contains('active')) {
+                        // Анимация появления
                         item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
+                        setTimeout(() => {
+                            item.classList.add('fade-in');
+                            item.classList.remove('fade-out');
+                            item.classList.add('active');
+                            gsap.fromTo(item, {
+                                opacity: 0,
+                                scale: 0.8,
+                                rotation: -5
+                            }, {
+                                opacity: 1,
+                                scale: 1,
+                                rotation: 0,
+                                duration: 0.6,
+                                delay: index * 0.1,
+                                ease: "back.out(1.7)"
+                            });
+                        }, 50);
+                    } else if (!shouldShow && item.classList.contains('active')) {
+                        // Анимация исчезновения
+                        item.classList.add('fade-out');
+                        item.classList.remove('fade-in');
+                        item.classList.remove('active');
+                        gsap.to(item, {
+                            opacity: 0,
+                            scale: 0.8,
+                            rotation: 5,
+                            duration: 0.4,
+                            onComplete: () => {
+                                item.style.display = 'none';
+                            }
+                        });
                     }
                 });
             });
         });
-        
+
+        // Инициализация GSAP и ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Универсальная функция для органичных анимаций
+        function createOrganicAnimations() {
+            // Настройки для разных типов элементов
+            const animationConfig = {
+                '.slide-from-left': { x: -80, y: 0, scale: 1, rotation: 0 },
+                '.slide-from-right': { x: 80, y: 0, scale: 1, rotation: 0 },
+                '.slide-from-bottom': { x: 0, y: 80, scale: 1, rotation: 0 },
+                '.slide-from-top': { x: 0, y: -80, scale: 1, rotation: 0 },
+                '.scale-in': { x: 0, y: 0, scale: 0.9, rotation: 0 },
+                '.rotate-in': { x: 0, y: 0, scale: 0.95, rotation: -5 },
+                '.fade-in': { x: 0, y: 0, scale: 0.95, rotation: 0 }
+            };
+
+            // Обрабатываем все элементы с анимациями
+            Object.keys(animationConfig).forEach(selector => {
+                const elements = gsap.utils.toArray(selector);
+                const config = animationConfig[selector];
+                
+                elements.forEach((element, index) => {
+                    // Добавляем небольшую задержку для шахматного эффекта
+                    const delay = index * 0.1;
+                    
+                    gsap.fromTo(element, {
+                        opacity: 0,
+                        visibility: "hidden",
+                        x: config.x,
+                        y: config.y,
+                        scale: config.scale,
+                        rotation: config.rotation
+                    }, {
+                        opacity: 1,
+                        visibility: "visible",
+                        x: 0,
+                        y: 0,
+                        scale: 1,
+                        rotation: 0,
+                        duration: 1.2,
+                        delay: delay,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: element,
+                            start: "top 85%",
+                            end: "bottom 15%",
+                            toggleActions: "play reverse play reverse",
+                            markers: false
+                        }
+                    });
+                });
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Запускаем органичные анимации
+            createOrganicAnimations();
+            
+            // Анимации для героя (без скролла)
+            const heroTl = gsap.timeline();
+            heroTl.fromTo('.hero h1', {
+                opacity: 0,
+                y: 100
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                ease: "power3.out"
+            })
+            .fromTo('.hero p', {
+                opacity: 0,
+                y: 50
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: "power2.out"
+            }, '-=0.5')
+            .fromTo('.hero-btn', {
+                opacity: 0,
+                scale: 0.8
+            }, {
+                opacity: 1,
+                scale: 1,
+                duration: 1,
+                ease: "back.out(1.7)"
+            }, '-=0.3');
+
+            // Анимация хедера
+            gsap.to('header', {
+                backgroundColor: 'rgba(10, 10, 10, 0.98)',
+                padding: '10px 0',
+                duration: 0.4,
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: '100px top',
+                    end: 'bottom top',
+                    toggleActions: 'play reverse play reverse'
+                }
+            });
+
+            // Инициализация видимых карточек коктейлей
+            document.querySelectorAll('#alcoholic-content .cocktail-card').forEach(card => {
+                card.classList.add('visible');
+            });
+        });
+
         // Функция для открытия WhatsApp
         function openWhatsApp(service = '') {
             const phone = '79773001608';
             const message = service ? `Здравствуйте! Я хочу заказать: ${service}` : 'Здравствуйте! Я хочу заказать мероприятие';
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
-        
+
         // Обработчик формы
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1472,44 +1791,34 @@
             const eventType = document.getElementById('event').value;
             const message = document.getElementById('message').value;
             
-            const fullMessage = `Новая заявка с сайта:%0AИмя: ${name}%0AТелефон: ${phone}%0AТип мероприятия: ${eventType}%0AСообщение: ${message}`;
+            const fullMessage = `Новая заявка с сайта:%0A%0AИмя: ${name}%0AТелефон: ${phone}%0AТип мероприятия: ${eventType}%0AСообщение: ${message}`;
             
             openWhatsApp(fullMessage);
         });
-        
+
         // Мобильное меню
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('nav').classList.toggle('active');
         });
-        
-        // Плавный скролл к якорям
+
+        // Плавный скролл
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
                     window.scrollTo({
-                        top: targetElement.offsetTop - 80,
+                        top: target.offsetTop - 80,
                         behavior: 'smooth'
                     });
-                    
-                    // Закрываем мобильное меню если открыто
                     document.querySelector('nav').classList.remove('active');
                 }
             });
         });
-        
-        // Переход наверх при клике на логотип
+
         document.querySelector('.logo').addEventListener('click', function(e) {
             e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
